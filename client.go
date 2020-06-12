@@ -25,6 +25,10 @@ func NewClient(baseURL string, Token string) *Client {
 	return c
 }
 
+func (c *Client) SetBaseURL(baseURL string) {
+	c.BaseURL = baseURL
+}
+
 func (c *Client) Get(path string, target interface{}) error {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 

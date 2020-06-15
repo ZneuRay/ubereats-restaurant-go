@@ -7,7 +7,7 @@ func (c *Client) GetMenu(storeID string) (menu interface{}, err error) {
 		return menu, fmt.Errorf("Invalid storeID.")
 	}
 
-	path := fmt.Sprintf("%s/%s", storeID, "menu")
+	path := fmt.Sprintf("%s/%s", storeID, "menus")
 
 	err = c.Get(path, &menu)
 	if err != nil {

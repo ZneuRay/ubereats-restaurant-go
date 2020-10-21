@@ -7,7 +7,7 @@ type Store struct {
 	Name        string `json:"name"`
 	StoreID     string `json:"store_id"`
 	AvgPrepTime uint32 `json:"avg_prep_time"`
-	Status      string `json:"active"`
+	Status      string `json:"status"`
 }
 
 func (c *Client) GetStore(storeID string) (store *Store, err error) {

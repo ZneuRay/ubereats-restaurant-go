@@ -62,6 +62,26 @@ func (c *Client) Post(path string, data, response interface{}) error {
 	return c.do(req, response)
 }
 
+func (c *Client) Patch(path string, data, response interface{}) error {
+	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
+
+	body, err := json.Marshal(data)
+
+	if err != nil {
+		return fmt.Errorf("Cannot marshal body: %w", err)
+	}
+
+	req, err := http.NewRequest("PATCH", url, bytes.NewReader(body))
+	if err != nil {
+		return fmt.Errorf("Cannot create request: %w", err)
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Token))
+
+	return c.do(req, response)
+}
+
 func (c *Client) do(req *http.Request, response interface{}) error {
 	if req == nil {
 		return errors.New("nil request")
@@ -83,7 +103,10 @@ func (c *Client) do(req *http.Request, response interface{}) error {
 		return fmt.Errorf("HTTP Read error on response for %s: %w", url, err)
 	}
 
-	err = json.Unmarshal(b, response)
+	if len(b) > 0 {
+		err = json.Unmarshal(b, response)
+	}
+
 	if err != nil {
 		return fmt.Errorf("JSON decode failed on %s:\n%s\nerror: %w", url, string(b), err)
 	}

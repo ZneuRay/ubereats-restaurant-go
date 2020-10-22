@@ -2,7 +2,7 @@ package ubereats
 
 import "fmt"
 
-type Pos struct {
+type PosStatus struct {
 	client                *Client
 	StoreID               string `json:"store_id"`
 	PosIntegrationEnabled bool   `json:"pos_integration_enabled"`
@@ -11,21 +11,17 @@ type Pos struct {
 	AutoAcceptEnabled     bool   `json:"auto_accept_enabled"`
 }
 
-func (c *Client) GetPosStatus(storeID string) (pos *Pos, err error) {
+func (c *Client) GetPosStatus(storeID string) (posStatus *PosStatus, err error) {
 	if storeID == "" {
-		return pos, fmt.Errorf("Invalid storeID.")
+		return posStatus, fmt.Errorf("invalid storeID")
 	}
 
 	path := fmt.Sprintf("%s/%s", storeID, "pos_data")
 
-	err = c.Get(path, &pos)
+	err = c.Get(path, &posStatus)
 	if err != nil {
-		return pos, err
+		return posStatus, err
 	}
 
-	if pos != nil {
-		pos.client = c
-	}
-
-	return
+	return posStatus, err
 }
